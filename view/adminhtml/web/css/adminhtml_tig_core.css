@@ -1,0 +1,264 @@
+.table-tig-core td {
+    vertical-align: inherit !important;
+}
+
+.button-tig-core {
+    width: 170px;
+    height: auto;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.button-update {
+    background-color: #000;
+    border-color: #000;
+}
+
+.button-update span
+{
+    font-weight:bold;
+    color:white
+}
+
+.button-install {
+    background-color: #03a9f4;
+    border-color: #008ff4;
+}
+.button-install span{
+    font-weight:bold;
+    color:white
+}
+
+.button-update:hover {
+    background-color: #d64d06;
+}
+
+.button-install:hover {
+    background-color: #008ff4;
+}
+
+.tig-extension-update-red{
+    color:#eb5202;
+    font-weight: 700;
+}
+
+.tig-extension-update-green{
+    color: #088300;
+    font-weight: 700;
+}
+
+.tig-extension-update-grey{
+    color: #909090;
+    font-weight: 700;
+}
+
+.tig-extension-version-info{
+    width: 100%;
+    height: auto;
+    margin-top: 20px;
+}
+.tig-extension-version-info-left{
+    width:50%;
+    height: auto;
+    text-align: left;
+    float: left;
+}
+.tig-extension-version-info-right{
+    width:50%;
+    height: auto;
+    float: left;
+}
+
+.tig-extension-compatibility-info{
+    width: 100%;
+    height: auto;
+    float: left;
+    margin-top: 8px;
+}
+.tig-extension-compatibility-info-left{
+    width:50%;
+    height: auto;
+    text-align: left;
+    float: left;
+}
+.tig-extension-compatibility-info-right{
+    width:50%;
+    height: auto;
+    float: left;
+}
+.tig-extension-release-notes{
+    width: 50%;
+    height: auto;
+    float: left;
+    padding-top: 8px;
+    margin-top: 20px;
+}
+
+.tig-extension-github-logo{
+    float: left;
+}
+
+.tig-extension-github-link{
+    float: left;
+    line-height: 16px;
+    color:#008ff4;
+}
+
+.button-update .tig-extension-github-logo{
+    float: left;
+    color:#fff;
+    margin-top: 2px;
+}
+
+.button-update .tig-extension-github-link{
+    float: left;
+    line-height: 16px;
+    color:#fff;
+    margin-top: 2px;
+}
+
+.button-update .tig-extension-github-link a{
+    color:#fff;
+}
+
+.button-install .tig-extension-github-link{
+    float: left;
+    line-height: 16px;
+    color:#fff;
+    margin-top: 2px;
+}
+
+.button-install .tig-extension-github-link a{
+    color:#fff;
+}
+
+.tig-extension-update{
+    width: 50%;
+    height: auto;
+    float: left;
+    margin-top: 20px;
+}
+
+.tig-extension-get{
+    width: 50%;
+    height: auto;
+    float: left;
+    margin-top: 20px;
+}
+
+.tig-extension-main {
+    float: left;
+    padding: 20px 20px 20px 20px;
+    width: 100%;
+    margin-bottom: 10px;
+    background: #f8f8f8;
+    height: auto;
+    box-sizing: border-box;
+    border: 1px solid #e3e3e3;
+}
+.tig-extension-image{
+    float: left;
+    height: 160px;
+    width: 160px;
+    margin-right: 20px;
+    background: darkgrey;
+}
+
+.tig-extension-description{
+    float: left;
+    box-sizing: border-box;
+    height: auto;
+    width: 50%;
+    margin-top: 10px;
+    border-left: 1px solid #ececec;
+    border-right: 1px solid #ececec;
+    padding-right: 20px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.tig-extension-action{
+    float: left;
+    text-align: right;
+    height: auto;
+    width: 30%;
+}
+.tig-extension-title {
+    display: block;
+    float: left;
+    height: auto;
+    font-weight: 600;
+    width: 100%;
+    margin-bottom: 20px;
+    color:black;
+}
+.tig-extension-installed {
+    float: left;
+    width: 100%;
+}
+.tig-extension-installed-true,
+.tig-extension-installed-false
+{
+    float: right;
+    margin-bottom: 10px;
+}
+
+.tig-extension-read-more {
+    margin-top: 10px;
+    float: left;
+    width: 100%;
+}
+
+.tig-extension-logo {
+    float: right;
+}
+.tig-extension-version-block{
+    width: 100%;
+    height: 160px;
+    margin-left: 20px;
+    float: left;
+}
+
+.tig-extension-installed-true
+.admin__scope-old input[type="radio"]:checked:after,
+.admin__scope-old input[type="checkbox"]:checked:after {
+    color: #3ea840;
+}
+
+.tig-extension-installed-true
+.admin__scope-old input[type="radio"],
+.admin__scope-old input[type="checkbox"] {
+    border: 1px solid #3ea840;
+}
+
+.tig-extension-installed-true
+.admin__scope-old input[type="radio"][disabled], .admin__scope-old input[type="checkbox"][disabled] {
+    background-color: #ffffff;
+    border-color: #3fa840;
+    opacity: 1;
+}
+
+.tig-extension-installed-false-label{
+    color:grey;
+}
+
+.tig-extension-installed-true-label{
+    color:#3ea840;
+}
+
+.tig-extension-installed{
+    float: left;
+    width: 100%;
+}
+
+.tig-core .admin__page-nav-title:before {
+    float: right;
+    width: 30px;
+    height: 30px;
+    margin-top: -5px;
+    margin-right: 3px;
+    background-image: url(../images/logo_tig.png) !important;
+    background-size: 25px !important;
+    background-repeat: no-repeat;
+    content: ' ';
+}
