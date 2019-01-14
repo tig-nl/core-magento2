@@ -251,7 +251,7 @@
     width: 100%;
 }
 
-.tig-core .admin__page-nav-title:before {
+.tig-extensions-logo:before {
     float: right;
     width: 30px;
     height: 30px;
@@ -261,4 +261,10 @@
     background-size: 25px !important;
     background-repeat: no-repeat;
     content: ' ';
+}
+
+.tig-extension-info-wrapper {
+    height: 69px;
+    width: 100%;
+    float: left;
 }

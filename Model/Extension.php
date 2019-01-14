@@ -167,7 +167,7 @@ class Extension
      */
     public function checkIfBackendAccountIsDutch()
     {
-        if ($this->localeResolver->getLocale() === 'nl_BE') {
+        if ($this->localeResolver->getLocale() === 'nl_BE' || $this->localeResolver->getLocale() === 'nl_NL') {
             return true;
         }
         return false;
