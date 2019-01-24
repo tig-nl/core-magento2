@@ -110,7 +110,6 @@ class Extension
                 return \Zend_Json::decode(file_get_contents($extensionDir . '/composer.json'))['version'];
             }
 
-
         } catch (\Exception $e) {
             return false;
         }
@@ -124,32 +123,41 @@ class Extension
      */
     public function checkModuleInstalled($moduleName)
     {
-        $boolInstalled = $this->fullModuleList->has(strip_tags($moduleName));
-        return $boolInstalled;
+        if(isset($moduleName)){
+            $boolInstalled = $this->fullModuleList->has(strip_tags($moduleName));
+            return $boolInstalled;
+        }
     }
 
     /**
-     * @param $moduleName
+     * @param $moduleItem
      * @return bool
      */
     public function checkModuleNeedsUpdate($moduleItem)
     {
-        $composerVersion = $this->getComposerInformation($moduleItem['name']);
+        if(isset($moduleItem)){
+            $composerVersion = $this->getComposerInformation($moduleItem['name']);
+        }
 
         if ($composerVersion < $this->getVersionFromExternalSource($moduleItem)) {
             return true;
         }
+
         return false;
     }
 
     /**
-     * @return array
+     * @return mixed
      */
     public function getFromExternalSource()
     {
-        $json = file_get_contents(self::url_tig_extensions);
-        $obj = json_decode($json, true);
-        return $obj;
+        $externalJson = file_get_contents(self::url_tig_extensions);
+
+        if(isset($externalJson)){
+            $decodedExternalJson = json_decode($externalJson, true);
+            return $decodedExternalJson;
+        }
+
     }
 
     /**
@@ -158,7 +166,10 @@ class Extension
      */
     public function getVersionFromExternalSource($moduleItem)
     {
-        return $moduleItem['version'];
+        if(isset($moduleItem['version'])){
+            return $moduleItem['version'];
+        }
+
     }
 
 
@@ -175,24 +186,26 @@ class Extension
 
 
     /**
-     * @param $arr
+     * @param $externalList
      * @return array
      */
-    public function generateTigFormatArray($arr)
+    public function generateTigFormatArray($externalList)
     {
         $result = [];
 
-        foreach ($arr as $item) {
-            array_push($item, array(
-                    'installed' => $this->checkModuleInstalled($item['name']),
-                    'update_available' => $this->checkModuleInstalled($item['name']) ? $this->checkModuleNeedsUpdate($item) : false,
-                    'version' => $this->getComposerInformation($item['name']),
-                    'external_version' => $this->getVersionFromExternalSource($item)
-                )
-            );
-            $result[] = $item;
+        if(isset($externalList)){
+            foreach ($externalList as $item) {
+                array_push($item, array(
+                        'installed' => $this->checkModuleInstalled($item['name']),
+                        'update_available' => $this->checkModuleInstalled($item['name']) ? $this->checkModuleNeedsUpdate($item) : false,
+                        'version' => $this->getComposerInformation($item['name']),
+                        'external_version' => $this->getVersionFromExternalSource($item)
+                    )
+                );
+                $result[] = $item;
+            }
+            return $result;
         }
-        return $result;
     }
 
     /**
@@ -201,11 +214,14 @@ class Extension
      */
     public function generateEnglishList($extensionList)
     {
+        try {
+            $engArr = $extensionList['extensions']['english'];
+            $result = $this->generateTigFormatArray($engArr);
+            return $result;
+        } catch (\Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
 
-        $dutchArr = $extensionList['extensions']['english'];
-        $result = $this->generateTigFormatArray($dutchArr);
-
-        return $result;
     }
 
     /**
@@ -214,28 +230,40 @@ class Extension
      */
     public function generateDutchList($extensionList)
     {
-        $dutchArr = $extensionList['extensions']['dutch'];
-        $result = $this->generateTigFormatArray($dutchArr);
+        try {
+            $dutchArr = $extensionList['extensions']['dutch'];
+            $result = $this->generateTigFormatArray($dutchArr);
+            return $result;
 
-        return $result;
+        } catch (\Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
     }
 
     /**
-     * @return array|mixed
+     * @return array|\Exception|mixed
      */
     public function generateModuleList()
     {
 
-        $result = [];
-        $extensionList = $this->getFromExternalSource();
+        try {
+            $result = [];
 
-        if ($this->checkIfBackendAccountIsDutch()) {
-            $result = $this->generateDutchList($extensionList);
-        }
-        if (!$this->checkIfBackendAccountIsDutch()) {
-            $result = $this->generateEnglishList($extensionList);
+            $extensionList = $this->getFromExternalSource();
+
+            if ($this->checkIfBackendAccountIsDutch()) {
+                $result = $this->generateDutchList($extensionList);
+            }
+            if (!$this->checkIfBackendAccountIsDutch()) {
+                $result = $this->generateEnglishList($extensionList);
+            }
+
+            return $result;
+
+        } catch (\Exception $e) {
+            return $e;
         }
 
-        return $result;
     }
 }

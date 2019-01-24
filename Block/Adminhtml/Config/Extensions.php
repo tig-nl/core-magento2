@@ -99,8 +99,11 @@ class Extensions extends Template implements RendererInterface
      */
     public function render(AbstractElement $element)
     {
-        $this->setElement($element);
-        return $this->toHtml();
+        if(isset($element)){
+            $this->setElement($element);
+            return $this->toHtml();
+        }
+
     }
 
     /**
@@ -108,7 +111,13 @@ class Extensions extends Template implements RendererInterface
      */
     public function generateExtensionsList()
     {
-        $extensionList = $this->extension->generateModuleList();
-        return $extensionList;
+        try {
+            $extensionList = $this->extension->generateModuleList();
+            return $extensionList;
+
+        } catch (\Exception $e) {
+            return $e;
+        }
+
     }
 }
