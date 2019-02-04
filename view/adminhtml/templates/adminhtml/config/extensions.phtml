@@ -35,16 +35,17 @@
  */
 ?>
 
-<?php foreach ($this->generateExtensionsList() as $item) : ?>
-    <?php
+<?php if (!$this->generateExtensionsList()) : ?>
 
-    if ($item['name'] === 'TIG_Core') {
-        continue;
-    }
+    <?php echo __('The list of versions is temporarily unreachable') ?>
 
-    ?>
+<?php else : ?>
 
-    <div class="tig-extension-main">
+    <?php foreach ($this->generateExtensionsList() as $item) : ?>
+
+        <?php if ($item['name'] === 'TIG_Core') { continue; } ?>
+
+        <div class="tig-extension-main">
         <div class="tig-extension-image">
             <?php if (isset($item['tig_image'])) : ?>
                 <img src="<?php echo $item['tig_image']; ?>">
@@ -190,6 +191,7 @@
     </div>
 
 <?php endforeach ?>
+<?php endif ?>
 
 <style>
 

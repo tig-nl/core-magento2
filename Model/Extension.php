@@ -151,12 +151,14 @@ class Extension
      */
     public function getFromExternalSource()
     {
-        $externalJson = file_get_contents(self::url_tig_extensions);
+        $context = stream_context_create(['http' => [
+            'ignore_errors' => true,
+        ]]);
 
-        if(isset($externalJson)){
-            $decodedExternalJson = json_decode($externalJson, true);
-            return $decodedExternalJson;
-        }
+        $externalJson = file_get_contents(self::url_tig_extensions, false, $context);
+
+        $decodedExternalJson = json_decode($externalJson, true);
+        return $decodedExternalJson;
 
     }
 
@@ -247,22 +249,23 @@ class Extension
     public function generateModuleList()
     {
 
-        try {
-            $result = [];
+        $result = [];
 
-            $extensionList = $this->getFromExternalSource();
+        $extensionList = $this->getFromExternalSource();
 
-            if ($this->checkIfBackendAccountIsDutch()) {
-                $result = $this->generateDutchList($extensionList);
-            }
-            if (!$this->checkIfBackendAccountIsDutch()) {
-                $result = $this->generateEnglishList($extensionList);
-            }
+        switch($extensionList) {
+            case false:
+                return false;
+                break;
+            default:
+                if ($this->checkIfBackendAccountIsDutch()) {
+                    $result = $this->generateDutchList($extensionList);
+                }
+                if (!$this->checkIfBackendAccountIsDutch()) {
+                    $result = $this->generateEnglishList($extensionList);
+                }
 
-            return $result;
-
-        } catch (\Exception $e) {
-            return $e;
+                return $result;
         }
 
     }
