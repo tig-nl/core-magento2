@@ -101,21 +101,20 @@ class Extension
      */
     public function getComposerInformation($moduleName)
     {
-        try {
-            $extensionDir = $this->composerDir->getModuleDir("", strip_tags($moduleName));
-            $filesList = scandir($extensionDir);
-            $filesListComposerPosition = array_search("composer.json", $filesList);
-
-            if ($filesList[$filesListComposerPosition] === 'composer.json') {
-                return \Zend_Json::decode(file_get_contents($extensionDir . '/composer.json'))['version'];
-            }
-
-        } catch (\Exception $e) {
-            return false;
+        switch ($this->fullModuleList->has($moduleName)) {
+            case true:
+                $extensionDir = $this->composerDir->getModuleDir("", strip_tags($moduleName));
+                $filesList = scandir($extensionDir);
+                $filesListComposerPosition = array_search("composer.json", $filesList);
+                if ($filesList[$filesListComposerPosition] === 'composer.json') {
+                    return \Zend_Json::decode(file_get_contents($extensionDir . '/composer.json'))['version'];
+                }
+                break;
+            case false:
+                break;
         }
-
-        return false;
     }
+
 
     /**
      * @param $moduleName
@@ -123,7 +122,7 @@ class Extension
      */
     public function checkModuleInstalled($moduleName)
     {
-        if(isset($moduleName)){
+        if (isset($moduleName)) {
             $boolInstalled = $this->fullModuleList->has(strip_tags($moduleName));
             return $boolInstalled;
         }
@@ -135,7 +134,7 @@ class Extension
      */
     public function checkModuleNeedsUpdate($moduleItem)
     {
-        if(isset($moduleItem)){
+        if (isset($moduleItem)) {
             $composerVersion = $this->getComposerInformation($moduleItem['name']);
         }
 
@@ -156,8 +155,7 @@ class Extension
         ]]);
         $externalJson = file_get_contents(self::url_tig_extensions, false, $context);
         $decodedExternalJson = json_decode($externalJson, true);
-
-        if(is_null($decodedExternalJson)){
+        if (is_null($decodedExternalJson)) {
             return false;
         }
         return $decodedExternalJson;
@@ -169,10 +167,7 @@ class Extension
      */
     public function getVersionFromExternalSource($moduleItem)
     {
-        if(isset($moduleItem['version'])){
-            return $moduleItem['version'];
-        }
-
+        return $moduleItem['version'];
     }
 
 
@@ -195,20 +190,17 @@ class Extension
     public function generateTigFormatArray($externalList)
     {
         $result = [];
-
-        if(isset($externalList)){
-            foreach ($externalList as $item) {
-                array_push($item, array(
-                        'installed' => $this->checkModuleInstalled($item['name']),
-                        'update_available' => $this->checkModuleInstalled($item['name']) ? $this->checkModuleNeedsUpdate($item) : false,
-                        'version' => $this->getComposerInformation($item['name']),
-                        'external_version' => $this->getVersionFromExternalSource($item)
-                    )
-                );
-                $result[] = $item;
-            }
-            return $result;
+        foreach ($externalList as $item) {
+            array_push($item, array(
+                    'installed' => $this->checkModuleInstalled($item['name']),
+                    'update_available' => $this->checkModuleInstalled($item['name']) ? $this->checkModuleNeedsUpdate($item) : false,
+                    'version' => $this->getComposerInformation($item['name']),
+                    'external_version' => $this->getVersionFromExternalSource($item)
+                )
+            );
+            $result[] = $item;
         }
+        return $result;
     }
 
     /**
@@ -222,7 +214,7 @@ class Extension
             $result = $this->generateTigFormatArray($engArr);
             return $result;
         } catch (\Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
+            echo 'Caught exception: ', $e->getMessage(), "\n";
         }
 
     }
@@ -239,19 +231,19 @@ class Extension
             return $result;
 
         } catch (\Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
+            echo 'Caught exception: ', $e->getMessage(), "\n";
         }
 
     }
 
     /**
-     * @return array|\Exception|mixed
+     * @return array|bool|mixed
      */
     public function generateModuleList()
     {
         $result = [];
         $extensionList = $this->getFromExternalSource();
-        switch($extensionList) {
+        switch ($extensionList) {
             case false:
                 return false;
                 break;
@@ -263,6 +255,7 @@ class Extension
                     $result = $this->generateEnglishList($extensionList);
                 }
                 return $result;
+                break;
         }
     }
 }

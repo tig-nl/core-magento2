@@ -99,20 +99,17 @@ class Extensions extends Template implements RendererInterface
      */
     public function render(AbstractElement $element)
     {
-        if(isset($element)){
-            $this->setElement($element);
-            return $this->toHtml();
-        }
-
+        $this->setElement($element);
+        return $this->toHtml();
     }
 
     /**
-     * @return array
+     * @return array|bool|mixed
      */
     public function generateExtensionsList()
     {
         $extensionList = $this->extension->generateModuleList();
-        if(!$extensionList){
+        if (!$extensionList) {
             return false;
         }
         return $extensionList;
