@@ -154,12 +154,13 @@ class Extension
         $context = stream_context_create(['http' => [
             'ignore_errors' => true,
         ]]);
-
         $externalJson = file_get_contents(self::url_tig_extensions, false, $context);
-
         $decodedExternalJson = json_decode($externalJson, true);
-        return $decodedExternalJson;
 
+        if(is_null($decodedExternalJson)){
+            return false;
+        }
+        return $decodedExternalJson;
     }
 
     /**
@@ -248,11 +249,8 @@ class Extension
      */
     public function generateModuleList()
     {
-
         $result = [];
-
         $extensionList = $this->getFromExternalSource();
-
         switch($extensionList) {
             case false:
                 return false;
@@ -264,9 +262,7 @@ class Extension
                 if (!$this->checkIfBackendAccountIsDutch()) {
                     $result = $this->generateEnglishList($extensionList);
                 }
-
                 return $result;
         }
-
     }
 }

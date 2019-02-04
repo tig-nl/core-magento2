@@ -112,11 +112,9 @@ class Extensions extends Template implements RendererInterface
     public function generateExtensionsList()
     {
         $extensionList = $this->extension->generateModuleList();
-
-        if(isset($extensionList)){
-            return $extensionList;
+        if(!$extensionList){
+            return false;
         }
-
-        return false;
+        return $extensionList;
     }
 }
