@@ -117,6 +117,6 @@ class Extensions extends Template implements RendererInterface
             return $extensionList;
         }
 
-        false;
+        return false;
     }
 }
