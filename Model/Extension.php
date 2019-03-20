@@ -67,7 +67,7 @@ class Extension
     /**
      * @var string
      */
-    const url_tig_extensions = 'http://dev.tig-grouped.local/tig_extensions.json';
+    const url_tig_extensions = 'https://tig.nl/tig_extensions.json';
 
 
     /**

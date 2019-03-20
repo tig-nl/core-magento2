@@ -34,10 +34,10 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
 <system>
     <tab id="tig" translate="label" sortOrder="450">
-        <label><![CDATA[<span class="tig-extensions-logo">TIG Extensions</span>]]></label>
+        <label><![CDATA[<span class="tig-extensions-logo">TIG</span>]]></label>
     </tab>
     <section id="tig_core" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
-        <label>Extensions</label>
+        <label>Manage extensions</label>
         <tab>tig</tab>
         <resource>TIG_Core::config</resource>
         <group id="extensions" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="0"
