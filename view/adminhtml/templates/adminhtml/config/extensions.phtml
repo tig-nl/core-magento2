@@ -35,89 +35,140 @@
  */
 ?>
 
-<?php if (!$this->generateExtensionsList()) : ?>
-
+<?php if (!$block->generateExtensionsList()) : ?>
     <?php echo __('The list of versions is temporarily unreachable') ?>
-
 <?php else : ?>
-
-    <?php foreach ($this->generateExtensionsList() as $item) : ?>
-
-        <?php if ($item['name'] === 'TIG_Core') { continue; } ?>
+    <?php foreach ($block->generateExtensionsList() as $item) : ?>
+        <?php if ($item['name'] === 'TIG_Core') {
+            continue;
+        } ?>
 
         <div class="tig-extension-main">
-        <div class="tig-extension-image">
-            <?php if (isset($item['tig_image'])) : ?>
-                <img src="<?php echo $item['tig_image']; ?>">
-            <?php endif ?>
-        </div>
-        <div class="tig-extension-description">
-            <span class='tig-extension-title'>
-                <?php echo $item['htmlname']; ?>
-                <span class='tig-extension-logo'>
-            <?php if (isset($item['image'])) : ?>
-                <img src="<?php echo $item['image']; ?>">
-            <?php endif ?>
-            </span>
-            </span>
-            <span>
-                <?php echo $item['description']; ?>
-            </span>
-            <span class="tig-extension-read-more">
-               <a href="<?php echo $item['url_tig']; ?>"><?php echo $item['text_read_more']; ?></a>
-            </span>
-        </div>
-        <div class="tig-extension-action">
-
-            <?php if ($item[0]['installed'] === true) : ?>
-
-                <div class="tig-extension-version-block">
-                    <?php if ($item[0]['update_available'] === true) : ?>
-                        <span class="tig-extension-update-red"><?php echo $item['notification_text_update']; ?></span>
-                    <?php else : ?>
-                        <span class="tig-extension-update-green"><?php echo $item['notification_running_latest_version']; ?></span>
-                    <?php endif ?>
-
-                    <div class="tig-extension-info-wrapper">
-                        <div class="tig-extension-version-info">
-                            <div class="tig-extension-version-info-left">
-                                <span><?php echo $item['text_installed_version']; ?></span>
-                            </div>
-                            <div class="tig-extension-version-info-right">
-                                <span> <?php echo $item[0]['version']; ?></span>
-                            </div>
-                        </div>
-
-
-                        <div class="tig-extension-compatibility-info">
-                            <div class="tig-extension-compatibility-info-left">
-                                <span> <?php echo $item['text_magento_compatibility']; ?></span>
-                            </div>
-                            <div class="tig-extension-compatibility-info-right">
-                                <span> <?php echo $item['compatibility']; ?></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tig-extension-release-notes">
-                        <div class="tig-extension-release-notes-wrapper">
-                            <div class="tig-extension-github-logo">
-                                <svg height="16" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1"
-                                     width="32" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                          d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-                                </svg>
-                            </div>
-                            <div class="tig-extension-github-link">
-                                <a href="<?php echo $item['url_release_notes']; ?>">Release notes</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tig-extension-update">
+            <div class="tig-extension-image">
+                <?php if (isset($item['tig_image'])) : ?>
+                    <img src="<?php echo $item['tig_image']; ?>">
+                <?php endif ?>
+            </div>
+            
+            <div class="tig-extension-description">
+                <span class='tig-extension-title'>
+                    <?php echo $item['htmlname']; ?>
+                    <span class='tig-extension-logo'>
+                        <?php if (isset($item['image'])) : ?>
+                            <img src="<?php echo $item['image']; ?>">
+                        <?php endif ?>
+                    </span>
+                </span>
+                <span>
+                    <?php echo $item['description']; ?>
+                </span>
+                <span class="tig-extension-read-more">
+                    <a href="<?php echo $item['url_tig']; ?>"><?php echo $item['text_read_more']; ?></a>
+                </span>
+            </div>
+            
+            <div class="tig-extension-action">
+                <?php if ($item[0]['installed'] === true) : ?>
+                    <div class="tig-extension-version-block">
                         <?php if ($item[0]['update_available'] === true) : ?>
-                            <a href="<?php echo $item[0]['update_available']; ?>">
-                                <button class="tig-button button-tig-core button-update" type="button">
+                            <span class="tig-extension-update-red"><?php echo $item['notification_text_update']; ?></span>
+                        <?php else : ?>
+                            <span class="tig-extension-update-green"><?php echo $item['notification_running_latest_version']; ?></span>
+                        <?php endif ?>
+
+                        <div class="tig-extension-info-wrapper">
+                            <div class="tig-extension-version-info">
+                                <div class="tig-extension-version-info-left">
+                                    <span><?php echo $item['text_installed_version']; ?></span>
+                                </div>
+                                <div class="tig-extension-version-info-right">
+                                    <span> <?php echo $item[0]['version']; ?></span>
+                                </div>
+                            </div>
+                            
+                            <div class="tig-extension-compatibility-info">
+                                <div class="tig-extension-compatibility-info-left">
+                                    <span> <?php echo $item['text_magento_compatibility']; ?></span>
+                                </div>
+                                <div class="tig-extension-compatibility-info-right">
+                                    <span> <?php echo $item['compatibility']; ?></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tig-extension-release-notes">
+                            <div class="tig-extension-release-notes-wrapper">
+                                <div class="tig-extension-github-logo">
+                                    <svg height="16" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1"
+                                         width="32" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                                    </svg>
+                                </div>
+                                <div class="tig-extension-github-link">
+                                    <a href="<?php echo $item['url_release_notes']; ?>">Release notes</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tig-extension-update">
+                            <?php if ($item[0]['update_available'] === true) : ?>
+                                <a href="<?php echo $item[0]['update_available']; ?>">
+                                    <button class="tig-button button-tig-core button-update" type="button">
+                                        <div class="tig-extension-github-logo">
+                                            <svg height="16" fill="white" class="octicon octicon-mark-github"
+                                                 viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
+                                                <path fill-rule="evenodd"
+                                                      d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="tig-extension-github-link">
+                                            <a href="<?php echo $item['url_update']; ?>"><?php echo $item['text_get_new_update']; ?></a>
+                                        </div>
+                                    </button>
+                                </a>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                <?php endif ?>
+                <?php if ($item[0]['installed'] === false) : ?>
+
+                    <div class="tig-extension-version-block">
+                        <span class="tig-extension-update-grey">
+                            <?php echo $item['text_not_installed']; ?>
+                        </span>
+
+                        <div class="tig-extension-info-wrapper">
+                            <div class="tig-extension-compatibility-info">
+                                <div class="tig-extension-compatibility-info-left">
+                                    <span> <?php echo $item['text_magento_compatibility']; ?></span>
+                                </div>
+                                <div class="tig-extension-compatibility-info-right">
+                                    <span> <?php echo $item['compatibility']; ?></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tig-extension-release-notes">
+                            <div class="tig-extension-release-notes-wrapper">
+                                <a href="<?php echo $item['url_release_notes']; ?>">
+                                    <div class="tig-extension-github-logo">
+                                        <svg height="16" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1"
+                                             width="32" aria-hidden="true">
+                                            <path fill-rule="evenodd"
+                                                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="tig-extension-github-link">
+                                        Release notes
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="tig-extension-get">
+                            <a href="<?php echo $item['url_github']; ?>">
+                                <button class="tig-button button-tig-core button-install" type="button">
                                     <div class="tig-extension-github-logo">
                                         <svg height="16" fill="white" class="octicon octicon-mark-github"
                                              viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
@@ -126,73 +177,14 @@
                                         </svg>
                                     </div>
                                     <div class="tig-extension-github-link">
-                                        <a href="<?php echo $item['url_update']; ?>"><?php echo $item['text_get_new_update']; ?></a>
+                                        <a href="<?php echo $item['url_download']; ?>"><?php echo $item['text_get_this_extension']; ?></a>
                                     </div>
                                 </button>
                             </a>
-                        <?php endif ?>
-                    </div>
-                </div>
-            <?php endif ?>
-            <?php if ($item[0]['installed'] === false) : ?>
-
-                <div class="tig-extension-version-block">
-                    <span class="tig-extension-update-grey">
-                        <?php echo $item['text_not_installed']; ?>
-                    </span>
-
-                    <div class="tig-extension-info-wrapper">
-                        <div class="tig-extension-compatibility-info">
-                            <div class="tig-extension-compatibility-info-left">
-                                <span> <?php echo $item['text_magento_compatibility']; ?></span>
-                            </div>
-                            <div class="tig-extension-compatibility-info-right">
-                                <span> <?php echo $item['compatibility']; ?></span>
-                            </div>
                         </div>
                     </div>
-
-                    <div class="tig-extension-release-notes">
-                        <div class="tig-extension-release-notes-wrapper">
-                            <a href="<?php echo $item['url_release_notes']; ?>">
-                            <div class="tig-extension-github-logo">
-                                <svg height="16" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1"
-                                     width="32" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                          d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-                                </svg>
-                            </div>
-                            <div class="tig-extension-github-link">
-                                Release notes
-                            </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="tig-extension-get">
-                        <a href="<?php echo $item['url_github']; ?>">
-                            <button class="tig-button button-tig-core button-install" type="button">
-                                <div class="tig-extension-github-logo">
-                                    <svg height="16" fill="white" class="octicon octicon-mark-github"
-                                         viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-                                    </svg>
-                                </div>
-                                <div class="tig-extension-github-link">
-                                    <a href="<?php echo $item['url_download']; ?>"><?php echo $item['text_get_this_extension']; ?></a>
-                                </div>
-                            </button>
-                        </a>
-                    </div>
-                </div>
-            <?php endif ?>
+                <?php endif ?>
+            </div>
         </div>
-    </div>
-
-<?php endforeach ?>
+    <?php endforeach ?>
 <?php endif ?>
-
-<style>
-
-</style>

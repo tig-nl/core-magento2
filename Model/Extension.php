@@ -37,99 +37,110 @@ use Magento\Framework\Module\Dir\Reader as ComposerDir;
 use Magento\Framework\Locale\ResolverInterface as ResolverInterface;
 use Zend\Uri\Http as HttpUri;
 
+// @codingStandardsIgnoreFile
 class Extension
 {
     /**
      * @var FullModuleList
      */
     protected $fullModuleList;
-
+    
     /**
      * @var ComposerDir
      */
     protected $composerDir;
-
+    
     /**
      * @var array
      */
     protected $extensions;
-
+    
     /**
      * @var array
      */
     protected $response;
-
+    
     /**
      * @var \Magento\Framework\HTTP\Client\Curl
      */
     protected $_curl;
-
+    
     /**
      * @var string
      */
     const url_tig_extensions = 'https://tig.nl/tig_extensions.json';
-
-
+    
+    
     /**
      * @var ResolverInterface
      */
     protected $localeResolver;
-
-
+    
+    
     /**
      * Extension constructor.
+     *
      * @param FullModuleList $fullModuleList
-     * @param ComposerDir $composerDir
-     * @param HttpUri $HttpUri
+     * @param ComposerDir    $composerDir
+     * @param HttpUri        $HttpUri
      */
     public function __construct(
         FullModuleList $fullModuleList,
         ComposerDir $composerDir,
         HttpUri $HttpUri,
         ResolverInterface $localeResolver
-    )
-    {
+    ) {
         $this->fullModuleList = $fullModuleList;
-        $this->composerDir = $composerDir;
+        $this->composerDir    = $composerDir;
         $this->localeResolver = $localeResolver;
-        $this->HttpUri = $HttpUri;
+        $this->HttpUri        = $HttpUri;
     }
-
+    
     /**
      * @param $moduleName
-     * @return bool
+     *
+     * @return mixed
+     * @throws \Zend_Json_Exception
      */
     public function getComposerInformation($moduleName)
     {
         switch ($this->fullModuleList->has($moduleName)) {
             case true:
-                $extensionDir = $this->composerDir->getModuleDir("", strip_tags($moduleName));
-                $filesList = scandir($extensionDir);
+                $extensionDir              = $this->composerDir->getModuleDir("", strip_tags($moduleName));
+                $filesList                 = scandir($extensionDir);
                 $filesListComposerPosition = array_search("composer.json", $filesList);
                 if ($filesList[$filesListComposerPosition] === 'composer.json') {
                     return \Zend_Json::decode(file_get_contents($extensionDir . '/composer.json'))['version'];
                 }
                 break;
             case false:
+                return null;
                 break;
         }
+        
+        return null;
     }
-
-
+    
+    
     /**
      * @param $moduleName
+     *
      * @return bool
      */
     public function checkModuleInstalled($moduleName)
     {
         if (isset($moduleName)) {
             $boolInstalled = $this->fullModuleList->has(strip_tags($moduleName));
+            
             return $boolInstalled;
         }
+        
+        return null;
     }
-
+    
     /**
      * @param $moduleItem
+     *
      * @return bool
      */
     public function checkModuleNeedsUpdate($moduleItem)
@@ -137,40 +148,44 @@ class Extension
         if (isset($moduleItem)) {
             $composerVersion = $this->getComposerInformation($moduleItem['name']);
         }
-
+        
         if ($composerVersion < $this->getVersionFromExternalSource($moduleItem)) {
             return true;
         }
-
+        
         return false;
     }
-
+    
     /**
      * @return mixed
      */
     public function getFromExternalSource()
     {
-        $context = stream_context_create(['http' => [
-            'ignore_errors' => true,
-        ]]);
-        $externalJson = file_get_contents(self::url_tig_extensions, false, $context);
+        $context             = stream_context_create([
+            'http' => [
+                'ignore_errors' => true,
+            ]
+        ]);
+        $externalJson        = file_get_contents(self::url_tig_extensions, false, $context);
         $decodedExternalJson = json_decode($externalJson, true);
         if (is_null($decodedExternalJson)) {
             return false;
         }
+        
         return $decodedExternalJson;
     }
-
+    
     /**
      * @param $moduleItem
+     *
      * @return mixed
      */
     public function getVersionFromExternalSource($moduleItem)
     {
         return $moduleItem['version'];
     }
-
-
+    
+    
     /**
      * @return bool
      */
@@ -179,12 +194,14 @@ class Extension
         if ($this->localeResolver->getLocale() === 'nl_BE' || $this->localeResolver->getLocale() === 'nl_NL') {
             return true;
         }
+        
         return false;
     }
-
-
+    
+    
     /**
      * @param $externalList
+     *
      * @return array
      */
     public function generateTigFormatArray($externalList)
@@ -192,19 +209,21 @@ class Extension
         $result = [];
         foreach ($externalList as $item) {
             array_push($item, array(
-                    'installed' => $this->checkModuleInstalled($item['name']),
+                    'installed'        => $this->checkModuleInstalled($item['name']),
                     'update_available' => $this->checkModuleInstalled($item['name']) ? $this->checkModuleNeedsUpdate($item) : false,
-                    'version' => $this->getComposerInformation($item['name']),
+                    'version'          => $this->getComposerInformation($item['name']),
                     'external_version' => $this->getVersionFromExternalSource($item)
                 )
             );
             $result[] = $item;
         }
+        
         return $result;
     }
-
+    
     /**
      * @param $extensionList
+     *
      * @return mixed
      */
     public function generateEnglishList($extensionList)
@@ -212,36 +231,40 @@ class Extension
         try {
             $engArr = $extensionList['extensions']['english'];
             $result = $this->generateTigFormatArray($engArr);
+            
             return $result;
         } catch (\Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n";
         }
-
+        
     }
-
+    
     /**
      * @param $extensionList
+     *
      * @return mixed
      */
     public function generateDutchList($extensionList)
     {
         try {
             $dutchArr = $extensionList['extensions']['dutch'];
-            $result = $this->generateTigFormatArray($dutchArr);
+            $result   = $this->generateTigFormatArray($dutchArr);
+            
             return $result;
-
+            
         } catch (\Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n";
         }
-
+        
+        return null;
     }
-
+    
     /**
      * @return array|bool|mixed
      */
     public function generateModuleList()
     {
-        $result = [];
+        $result        = [];
         $extensionList = $this->getFromExternalSource();
         switch ($extensionList) {
             case false:
@@ -254,6 +277,7 @@ class Extension
                 if (!$this->checkIfBackendAccountIsDutch()) {
                     $result = $this->generateEnglishList($extensionList);
                 }
+                
                 return $result;
                 break;
         }

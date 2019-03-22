@@ -34,7 +34,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="admin">
-        <route id="tigcore" frontName="tigcore">
+        <route id="tig" frontName="tig">
             <module name="TIG_Core"/>
         </route>
     </router>
