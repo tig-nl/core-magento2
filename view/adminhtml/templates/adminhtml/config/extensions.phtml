@@ -49,7 +49,7 @@
                     <img src="<?php echo $item['tig_image']; ?>">
                 <?php endif ?>
             </div>
-            
+
             <div class="tig-extension-description">
                 <span class='tig-extension-title'>
                     <?php echo $item['htmlname']; ?>
@@ -63,10 +63,10 @@
                     <?php echo $item['description']; ?>
                 </span>
                 <span class="tig-extension-read-more">
-                    <a href="<?php echo $item['url_tig']; ?>"><?php echo $item['text_read_more']; ?></a>
+                    <a href="<?php echo $item['url_tig']; ?>" target="_blank"><?php echo $item['text_read_more']; ?></a>
                 </span>
             </div>
-            
+
             <div class="tig-extension-action">
                 <?php if ($item[0]['installed'] === true) : ?>
                     <div class="tig-extension-version-block">
@@ -85,7 +85,7 @@
                                     <span> <?php echo $item[0]['version']; ?></span>
                                 </div>
                             </div>
-                            
+
                             <div class="tig-extension-compatibility-info">
                                 <div class="tig-extension-compatibility-info-left">
                                     <span> <?php echo $item['text_magento_compatibility']; ?></span>
@@ -106,7 +106,7 @@
                                     </svg>
                                 </div>
                                 <div class="tig-extension-github-link">
-                                    <a href="<?php echo $item['url_release_notes']; ?>">Release notes</a>
+                                    <a href="<?php echo $item['url_release_notes']; ?>" target="_blank">Release notes</a>
                                 </div>
                             </div>
                         </div>
